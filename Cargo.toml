@@ -1,0 +1,6 @@
+[package]
+name = "rvsgo"
+version = "0.1.0"
+authors = ["Spencer Killen <spleen_387@me.com>"]
+
+[dependencies]
