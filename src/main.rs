@@ -1,6 +1,12 @@
-use std::ops::Range;
-use std::f64;
+/**
+ * Command line graph plotting written in rust
+ * Author: Spencer Killen
+ * May 10th 2017
+ */
 
+use std::ops::Range;
+
+// Map the range of a function into the viewport range
 struct LinearScale {
     domain: Range<i64>,
     range: Range<i64>
@@ -25,18 +31,16 @@ impl LinearScale {
     }
 }
 
-struct Graph {
+pub struct Graph {
     x: Range<i64>,
-    y: Range<i64>,
     image: Vec<Vec<char>>,
     scale_x: LinearScale,
     scale_y: LinearScale,
-    width: usize,
     height: usize
 }
 
 impl Graph {
-    fn new(x: Range<i64>, y: Range<i64>) -> Graph {
+    pub fn new(x: Range<i64>, y: Range<i64>) -> Graph {
         let width = (x.end - x.start) as usize;
         let height = (y.end - y.start) as usize;
         let scale_x = LinearScale::new(x.clone(), 0..(width as i64));
@@ -60,17 +64,17 @@ impl Graph {
         }
         Graph {
             x: x,
-            y: y,
-            width: width,
             height: height,
             scale_x: scale_x,
             scale_y: scale_y,
             image: image
         }
     }
-    fn curve<F: Fn(f64) -> f64>(&mut self, curve: F, dot: char) {
+
+    // Plot a function on the graph using a given character
+    pub fn curve<F: Fn(f64) -> f64>(&mut self, curve: F, dot: char) {
         // plot points
-        let mut x = self.x.clone();
+        let x = self.x.clone();
         for i in x {
             let plot_x = self.scale_x.scale(i as f64) as usize;
             let curve_y = curve(i as f64);
@@ -82,7 +86,9 @@ impl Graph {
         }
 
     }
-    fn draw(self) {
+
+    // Flush all curves to stdout. to be called after all curves are created
+    pub fn draw(self) {
         for row in self.image {
             for c in row {
                 print!("{}", c);
