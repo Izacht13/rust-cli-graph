@@ -72,7 +72,6 @@ impl Graph {
         // plot points
         let mut x = self.x.clone();
         for i in x {
-            print!("iter {}", dot);
             let plot_x = self.scale_x.scale(i as f64) as usize;
             let curve_y = curve(i as f64);
             if !self.scale_y.check_domain(curve_y) {
@@ -96,6 +95,6 @@ impl Graph {
 fn main() {
     let mut chart = Graph::new(-70..70, -20..20);
     chart.curve(|x| (x/8.0 + 2.0).sin()*19.0, '$');
-    chart.curve(|x| (x/8.0).sin()*5.0, '*');
+    chart.curve(|x| (-x/8.0).sin()*5.0, '*');
     chart.draw();
 }
